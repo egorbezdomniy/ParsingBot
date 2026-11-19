@@ -1,9 +1,11 @@
+from ParsingBot.bot_config import subscription_admin_credentials, subscription_api_url
+
 import requests
 
 
 def authenticated_get_request(credentials):
     try:
-        response = requests.get('https://megaparsing.pythonanywhere.com/users', params=credentials)
+        response = requests.get(subscription_api_url(), params=credentials)
 
         if response.status_code == 200:
             data = response.json()
@@ -15,12 +17,9 @@ def authenticated_get_request(credentials):
 
 
 def admin_request_get(chat_id):
-    credentials = {
-        'app_password': 'REDACTED',
-        'chat_id': '7777777'
-    }
+    credentials = subscription_admin_credentials()
 
-    response = requests.get('https://megaparsing.pythonanywhere.com/users/', params=credentials)
+    response = requests.get(subscription_api_url(), params=credentials)
     if response.status_code == 200:
         data = response.json()
         chat_id_str = str(chat_id)
@@ -32,24 +31,18 @@ def admin_request_get(chat_id):
 
 def admin_request_get_all():
     try:
-        credentials = {
-            'app_password': 'REDACTED',
-            'chat_id': '7777777'
-        }
+        credentials = subscription_admin_credentials()
 
-        response = requests.get('https://megaparsing.pythonanywhere.com/users/', params=credentials)
+        response = requests.get(subscription_api_url(), params=credentials)
         return response.json()
     except Exception as e:
         return f"Ошибка при запросе: {e}"
 
 
 def admin_request_patch(data, chat_id):
-    credentials = {
-        'app_password': 'REDACTED',
-        'chat_id': '7777777'
-    }
+    credentials = subscription_admin_credentials()
     # Получаем список пользователей с сервера
-    response = requests.get('https://megaparsing.pythonanywhere.com/users/', params=credentials)
+    response = requests.get(subscription_api_url(), params=credentials)
     if response.status_code == 200:
         db_data = response.json()
         user_info = None
@@ -59,7 +52,7 @@ def admin_request_patch(data, chat_id):
                 break
         if user_info:
             # Выполняем PATCH запрос для обновления данных пользователя
-            patch_response = requests.patch(f'https://megaparsing.pythonanywhere.com/users/{user_info["id"]}/', json=data, params=credentials)
+            patch_response = requests.patch(f'{subscription_api_url()}{user_info["id"]}/', json=data, params=credentials)
             if patch_response.status_code == 200:
                 print("Значение успешно обновлено через API.")
             else:

@@ -1,3 +1,7 @@
+from ParsingBot.bot_config import PHOTO_DIR
+
+from ParsingBot.bot_config import subscription_admin_credentials, subscription_api_url
+
 import requests
 
 from ParsingBot.func.api_functions import admin_request_get_all
@@ -8,7 +12,7 @@ from ParsingBot.func.main_menu import last_message_ids, main_menu
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     try:
-        sent_message = bot.send_photo(message.chat.id, open('photo/dobro.jpg', 'rb'), reply_markup=main_menu)
+        sent_message = bot.send_photo(message.chat.id, open(PHOTO_DIR / "dobro.jpg", 'rb'), reply_markup=main_menu)
         last_message_ids[message.chat.id] = sent_message.message_id
         user_exists = 0
         # Проверка существования записи для данного юзера
@@ -37,11 +41,8 @@ def handle_start(message):
                 'end_of_subscription': None,
                 'app_password': None,
             }
-            credentials = {
-                'app_password': 'REDACTED',
-                'chat_id': '7777777'
-            }
-            response = requests.post('https://megaparsing.pythonanywhere.com/users/', json=data, params=credentials)
+            credentials = subscription_admin_credentials()
+            response = requests.post(subscription_api_url(), json=data, params=credentials)
             if response.status_code == 201:
                 print("Запись о новом пользователе успешно создана через API.")
             else:

@@ -1,3 +1,5 @@
+from ParsingBot.bot_config import PHOTO_DIR
+
 import secrets
 import string
 from datetime import datetime, timedelta
@@ -13,7 +15,6 @@ from ParsingBot.func.payments import payment_func
 
 def check_subscription_status(chat_id):
     user_info = admin_request_get(chat_id)
-    print(user_info)
     subscription_info = [user_info['subscription_status'], user_info['end_of_subscription'],
                          user_info['payment_url_1_month'], user_info['payment_url_3_month'],
                          user_info['payment_url_1_year'], user_info['order_id_1_month'], user_info['order_id_3_month'],
@@ -29,7 +30,7 @@ def check_subscription_status(chat_id):
                 # Подписка активна
                 delete_previous_message(chat_id)
                 password = user_info['app_password']
-                with open('photo/catalog.jpg', 'rb') as photo:
+                with open(PHOTO_DIR / "catalog.jpg", 'rb') as photo:
                     sent_message = bot.send_photo(chat_id, photo,
                                                   caption="<b><a href='https://drive.google.com/file/d/1JXrp9FRQOZTXdv1C9ZI-MzAlCey1Q2HK/view?usp=sharing'>"
                                                           "Скачать парсер</a></b> \n"
@@ -48,7 +49,7 @@ def check_subscription_status(chat_id):
                 data = {'subscription_status': False}
                 admin_request_patch(chat_id=chat_id, data=data)
                 bot.send_message(chat_id, "Ваша подписка истекла. Теперь она неактивна.")
-                with open('photo/oplata.jpg', 'rb') as photo:
+                with open(PHOTO_DIR / "oplata.jpg", 'rb') as photo:
                     sent_message = bot.send_photo(chat_id, photo, reply_markup=create_oplata_keyboard())
 
                 last_message_ids[chat_id] = sent_message.message_id
@@ -88,7 +89,7 @@ def check_subscription_status(chat_id):
                     'payment_url_1_year': confirmation_url_1_year}
             admin_request_patch(chat_id=chat_id, data=data)
 
-            with open('photo/oplata.jpg', 'rb') as photo:
+            with open(PHOTO_DIR / "oplata.jpg", 'rb') as photo:
                 sent_message = bot.send_photo(chat_id, photo, reply_markup=create_oplata_keyboard())
 
             last_message_ids[chat_id] = sent_message.message_id

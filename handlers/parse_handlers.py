@@ -1,3 +1,5 @@
+from ParsingBot.bot_config import PHOTO_DIR
+
 import io
 
 import pandas as pd
@@ -19,7 +21,7 @@ def create_fast_parse_keyboard():
 
 
 def fast_parse_handler(call):
-    with open('photo/parsing_your_link.jpg', 'rb') as photo:
+    with open(PHOTO_DIR / "parsing_your_link.jpg", 'rb') as photo:
         sent_message = bot.send_photo(call.message.chat.id, photo, caption="<b>Введите команду</b>:\n\n"
                                                                            "/parse {Ссылка} {минимальный процент кешбека} {Количество страниц каталога для парса\n\n"
                                                                            "Используйте ссылки только из каталога\n\n"

@@ -1,3 +1,5 @@
+from ParsingBot.bot_config import subscription_admin_credentials, subscription_api_url
+
 import os
 import signal
 from datetime import datetime, timedelta
@@ -11,7 +13,7 @@ from ParsingBot.func.subsription import update_password, generate_password
 
 trial_access_dict = {}
 
-admin_ids = {0, 0, 0}
+admin_ids = {int(value) for value in os.getenv("TELEGRAM_ADMIN_IDS", "").split(",") if value.strip()}
 
 
 def is_admin(chat_id):
@@ -196,10 +198,7 @@ def handle_grant_subscription_command(message):
 
 
 def grant_subscription(user_id, days):
-    credentials = {
-        'app_password': 'REDACTED',
-        'chat_id': '7777777'
-    }
+    credentials = subscription_admin_credentials()
     try:
         user_info = admin_request_get(user_id)
 
@@ -211,7 +210,7 @@ def grant_subscription(user_id, days):
         end_of_subscription = end_time.strftime('%Y-%m-%d %H:%M:%S')
 
         data = {'end_of_subscription': end_of_subscription, 'subscription_status': True}
-        response = requests.patch(f'https://megaparsing.pythonanywhere.com/users/{user_info["id"]}/', json=data, params=credentials)
+        response = requests.patch(f'{subscription_api_url()}{user_info["id"]}/', json=data, params=credentials)
 
         return True
     except Exception as e:

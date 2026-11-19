@@ -1,3 +1,5 @@
+from ParsingBot.bot_config import PHOTO_DIR
+
 from ParsingBot.func.catalog_keyboard import create_parsing_keyboard
 from ParsingBot.func.main_menu import bot, send_profile_info, send_about_us_info, send_help_info, back_to_main_menu, \
     last_message_ids
@@ -34,7 +36,7 @@ def handle_buttons_func(call):
         ask_for_promo(call.message.chat.id)
     elif call.data == 'back2':
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            with open('photo/catalog.jpg', 'rb') as photo:
+            with open(PHOTO_DIR / "catalog.jpg", 'rb') as photo:
                 sent_message = bot.send_photo(call.message.chat.id, photo, reply_markup=create_parsing_keyboard())
             last_message_ids[call.message.chat.id] = sent_message.message_id
     elif call.data == 'back_current':

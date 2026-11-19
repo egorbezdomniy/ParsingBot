@@ -1,14 +1,14 @@
+from ParsingBot.bot_config import PHOTO_DIR
+
 import os
 
 import telebot
-from dotenv import load_dotenv
 from telebot import types
 
 from ParsingBot.func.api_functions import admin_request_get
 from ParsingBot.text_about_us import about_us_text
 
-load_dotenv()
-bot = telebot.TeleBot(os.getenv('token'))
+bot = telebot.TeleBot(os.environ["TELEGRAM_BOT_TOKEN"])
 last_message_ids = {}
 
 # Клавиатура "Главное меню"
@@ -62,7 +62,7 @@ def send_profile_info(chat_id):
             types.InlineKeyboardButton('Назад', callback_data='back')
         )
 
-        with open('photo/profile.jpg', 'rb') as photo:
+        with open(PHOTO_DIR / "profile.jpg", 'rb') as photo:
             sent_message = bot.send_photo(chat_id, photo, caption=profile_text, reply_markup=profile_keyboard,
                                           parse_mode='HTML')
 
@@ -77,7 +77,7 @@ def send_profile_info(chat_id):
 
 # "О нас"
 def send_about_us_info(chat_id):
-    with open('photo/about_us.jpg', 'rb') as photo:
+    with open(PHOTO_DIR / "about_us.jpg", 'rb') as photo:
         sent_message = bot.send_photo(chat_id, photo, caption=about_us_text, reply_markup=back_button,
                                       parse_mode='HTML')
 
@@ -99,7 +99,7 @@ def send_help_info(chat_id):
                 "<b><a href='https://www.youtube.com/watch?v=E6wBDR0DBaE&t=7s'>Мануал по заработку</a></b>\n\n" \
                 "<b>Техническая поддержка: <u>@drocheslaves</u></b>\n" \
                 "По всем вопросам писать сюда"
-    with open('photo/help.jpg', 'rb') as photo:
+    with open(PHOTO_DIR / "help.jpg", 'rb') as photo:
         sent_message = bot.send_photo(chat_id, photo, caption=help_text, reply_markup=back_button, parse_mode='HTML')
 
     if chat_id in last_message_ids:
@@ -110,7 +110,7 @@ def send_help_info(chat_id):
 
 def back_to_main_menu(chat_id):
     try:
-        sent_message = bot.send_photo(chat_id, open('photo/dobro.jpg', 'rb'), reply_markup=main_menu)
+        sent_message = bot.send_photo(chat_id, open(PHOTO_DIR / "dobro.jpg", 'rb'), reply_markup=main_menu)
 
         if chat_id in last_message_ids and last_message_ids[chat_id] is not None:
             bot.delete_message(chat_id, last_message_ids[chat_id])

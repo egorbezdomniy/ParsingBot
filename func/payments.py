@@ -1,3 +1,6 @@
+from ParsingBot.bot_config import PHOTO_DIR
+
+import os
 import json
 
 from telebot import types
@@ -6,11 +9,11 @@ from yookassa import Configuration, Payment
 from ParsingBot.func.api_functions import admin_request_get
 from ParsingBot.func.main_menu import bot, last_message_ids, delete_previous_message
 
-Configuration.account_id = 'REDACTED'
-Configuration.secret_key = 'REDACTED'
 
 
 def payment_func(value, description):
+    Configuration.account_id = os.environ["YOOKASSA_SHOP_ID"]
+    Configuration.secret_key = os.environ["YOOKASSA_SECRET_KEY"]
     payment = Payment.create({
         "amount": {
             "value": value,
@@ -21,7 +24,7 @@ def payment_func(value, description):
         },
         "confirmation": {
             "type": "redirect",
-            "return_url": "https://t.me/MegaMarketParsingBot"
+            "return_url": os.environ["YOOKASSA_RETURN_URL"]
         },
         "capture": True,
         "description": description
@@ -30,7 +33,7 @@ def payment_func(value, description):
     payment_data = json.loads(payment.json())
     payment_id = payment_data['id']
     return json.loads(payment.json()), confirmation_url, payment_id
-# эта хуйня делает создает оплату
+# Показывает варианты оплаты подписки.
 def send_price_options(chat_id):
     try:
         user_info = admin_request_get(chat_id)
@@ -53,7 +56,7 @@ def send_price_options(chat_id):
 
         delete_previous_message(chat_id)
 
-        with open('photo/price.jpg', 'rb') as photo:
+        with open(PHOTO_DIR / "price.jpg", 'rb') as photo:
             sent_message = bot.send_photo(chat_id, photo, reply_markup=price_options_keyboard)
 
         last_message_ids[chat_id] = sent_message.message_id

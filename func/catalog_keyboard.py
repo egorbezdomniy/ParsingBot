@@ -28,8 +28,6 @@ def process_new_password(message):
 
     try:
         user_info = admin_request_get(chat_id)
-        print(user_info)
-        print(new_password)
         try:
             data = {'app_password': new_password}
             admin_request_patch(data=data, chat_id=chat_id)
