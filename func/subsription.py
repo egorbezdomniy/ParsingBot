@@ -118,7 +118,7 @@ def update_password(chat_id, new_password):
 
 
     except Exception as e:
-        print(f"Error in update_password: {e}")
+        print(f"Error in update_password: {type(e).__name__}")
     finally:
         print('Успешно обновлен пароль')
 
@@ -138,7 +138,7 @@ def check_subscription_payment(chat_id):
                     payment = Payment.find_one(order_id)
 
                     if payment and payment.status == "succeeded":
-                        print(f"Payment for order_id {order_id} is successful.")
+                        print(f"Payment for order_id [скрыто] is successful.")
                         delete_previous_message(chat_id)
                         # Устанавливаем дату в зависимости от количества итераций
                         subscription_duration = durations[i]
@@ -173,10 +173,10 @@ def check_subscription_payment(chat_id):
                                          f"Оплата прошла успешно. Подписка активирована до {end_of_subscription.strftime('%Y-%m-%d')}.")
                         break
                     else:
-                        print(f"Payment for order_id {order_id} has failed.")
+                        print(f"Payment for order_id [скрыто] has failed.")
                 else:
                     bot.send_message(chat_id, "Нет активных заказов для проверки.")
 
     except Exception as e:
-        print(f"Error in check_subscription_payment: {e}")
+        print(f"Error in check_subscription_payment: {type(e).__name__}")
         bot.send_message(chat_id, "Произошла ошибка при проверке оплаты.")

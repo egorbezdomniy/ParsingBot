@@ -1,4 +1,4 @@
-from ParsingBot.bot_config import PHOTO_DIR
+from ParsingBot.bot_config import PHOTO_DIR, subscription_admin_credentials, subscription_api_url
 
 import io
 
@@ -30,12 +30,9 @@ def fast_parse_handler(call):
 
 def get_subscription_status(chat_id, message):
     try:
-        credentials = {
-            'app_password': 'REDACTED',
-            'chat_id': '7777777'
-        }
+        credentials = subscription_admin_credentials()
 
-        response = requests.get('https://megaparsing.pythonanywhere.com/users/', params=credentials)
+        response = requests.get(subscription_api_url(), params=credentials)
         if response.status_code == 200:
             data = response.json()
             for user in data:
@@ -47,7 +44,7 @@ def get_subscription_status(chat_id, message):
         else:
             bot.send_message(message.chat.id, "Ошибка При проверки статуса вашей подписки")
     except Exception as e:
-        bot.send_message(message.chat.id, f"Ошибка При проверки статуса вашей подписки {e}")
+        bot.send_message(message.chat.id, f"Ошибка При проверки статуса вашей подписки {type(e).__name__}")
 @bot.message_handler(commands=['parse'])
 def catalog_handler_func(message):
     user_id = message.chat.id
@@ -85,7 +82,7 @@ def catalog_handler_func(message):
     bonus_percent = int(bonus_percent)
 
     if url.startswith('https://megamarket.ru/catalog/'):
-        print(f'{message.from_user.username} Парсит {url} {parse_pages} страниц')
+        print(f"Парсинг начат. Страниц к обработке: {parse_pages}.")
         try:
             bot.send_message(message.chat.id,
                              '(1/3) Подключаеся к сайту мегамаркет, это может занять до минуты, подождите...)')
@@ -117,9 +114,9 @@ def catalog_handler_func(message):
             back_keyboard = types.InlineKeyboardMarkup().add(back_button)
             sent_message = bot.send_message(message.chat.id, 'Нажмите, чтобы вернуться к каталогу.',
                                             reply_markup=back_keyboard)
-            print(f'{message.from_user.username} Пропарсил успешно {len(offers)} объявлений')
+            print(f"Парсинг завершён. Найдено предложений: {len(offers)}.")
         except Exception as e:
-            print(f"Произошла ошибка при выполнении парсинга: {str(e)}")
+            print(f"Произошла ошибка при выполнении парсинга: {type(e).__name__}")
         finally:
             if 'driver' in locals():
                 driver.quit()

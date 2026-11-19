@@ -13,7 +13,7 @@ def authenticated_get_request(credentials):
         else:
             return f"Ошибка: {response.status_code}"
     except Exception as e:
-        return f"Ошибка при запросе: {e}"
+        return f"Ошибка при запросе: {type(e).__name__}"
 
 
 def admin_request_get(chat_id):
@@ -36,7 +36,7 @@ def admin_request_get_all():
         response = requests.get(subscription_api_url(), params=credentials)
         return response.json()
     except Exception as e:
-        return f"Ошибка при запросе: {e}"
+        return f"Ошибка при запросе: {type(e).__name__}"
 
 
 def admin_request_patch(data, chat_id):

@@ -62,7 +62,7 @@ def send_price_options(chat_id):
         last_message_ids[chat_id] = sent_message.message_id
 
     except Exception as e:
-        print(f"Error in send_price_options: {e}")
+        print(f"Error in send_price_options: {type(e).__name__}")
 
 # отправляет меню с прайсом
 def create_oplata_keyboard():

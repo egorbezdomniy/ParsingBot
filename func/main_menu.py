@@ -28,7 +28,7 @@ def delete_previous_message(chat_id):
         try:
             bot.delete_message(chat_id, message_id_to_delete)
         except telebot.apihelper.ApiTelegramException as e:
-            print(f"Ошибка удаления сообщения: {e}")
+            print(f"Ошибка удаления сообщения: {type(e).__name__}")
 
 
 def send_profile_info(chat_id):
@@ -118,4 +118,4 @@ def back_to_main_menu(chat_id):
         last_message_ids[chat_id] = sent_message.message_id
 
     except telebot.apihelper.ApiTelegramException as e:
-        print(f"Error in back_to_main_menu: {e}")
+        print(f"Error in back_to_main_menu: {type(e).__name__}")

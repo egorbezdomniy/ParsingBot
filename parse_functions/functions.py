@@ -19,7 +19,7 @@ def more(driver, pages: int, delay=2):
             show_more_button.click()
             time.sleep(delay)
         except NoSuchElementException as e:
-            print(f"Ошибка при попытке нажатия кнопки 'Показать больше': {e}")
+            print(f"Ошибка при попытке нажатия кнопки 'Показать больше': {type(e).__name__}")
             break
 
 

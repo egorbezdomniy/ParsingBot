@@ -29,7 +29,7 @@ if __name__ == '__main__':
             print('Bot is alive')
             bot.polling(none_stop=True)
         except Exception as err:
-            logging.error(err)
+            logging.error("Polling failed (%s)", type(err).__name__)
             time.sleep(5)
             print('Bot is dead')
 

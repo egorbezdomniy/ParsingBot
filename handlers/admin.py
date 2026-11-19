@@ -27,7 +27,7 @@ def process_broadcast_text(text):
             # Отправляем сообщение с HTML разметкой
             bot.send_message(user_id, text, parse_mode='HTML')
         except Exception as e:
-            print(f"Не удалось отправить сообщение пользователю {user_id}: {str(e)}")
+            print(f"Не удалось отправить сообщение пользователю [скрыто]: {type(e).__name__}")
 
 
 # Обработка выбора администратором
@@ -91,7 +91,7 @@ def handle_broadcast_command(message):
                                                   f"после команды сразу вписывайте текст\n"
                                                   f"форматирование делать как в HTML")
         except Exception as e:
-            print(f"Ошибка при обработке команды /broadcast: {str(e)}")
+            print(f"Ошибка при обработке команды /broadcast: {type(e).__name__}")
     else:
         bot.send_message(message.chat.id, "Извините, я вас не понял. Используйте команду /start")
 
@@ -102,7 +102,7 @@ def send_broadcast(text):
         try:
             bot.send_message(user_id, text)
         except Exception as e:
-            print(f"Не удалось отправить сообщение пользователю {user_id}: {str(e)}")
+            print(f"Не удалось отправить сообщение пользователю [скрыто]: {type(e).__name__}")
 
 
 def get_all_user_ids():
@@ -110,7 +110,7 @@ def get_all_user_ids():
         user_ids = [user['chat_id'] for user in admin_request_get_all()]
         return user_ids
     except Exception as e:
-        print(f"Ошибка при получении chat_id: {str(e)}")
+        print(f"Ошибка при получении chat_id: {type(e).__name__}")
         return []
 
 
@@ -165,7 +165,7 @@ def handle_infopromo_command(message):
 
             bot.send_message(message.chat.id, response_text, parse_mode='HTML')
         except Exception as e:
-            print(f"Ошибка при обработке команды /infopromo: {str(e)}")
+            print(f"Ошибка при обработке команды /infopromo: {type(e).__name__}")
     else:
         bot.send_message(message.chat.id, "Извините, я вас не понял. Используйте команду /start")
 
@@ -214,7 +214,7 @@ def grant_subscription(user_id, days):
 
         return True
     except Exception as e:
-        print(f"Ошибка при предоставлении подписки: {e}")
+        print(f"Ошибка при предоставлении подписки: {type(e).__name__}")
         return False
     finally:
         pass
@@ -244,7 +244,7 @@ def send_message_to_user(user_id, message_text):
     try:
         bot.send_message(user_id, message_text)
     except Exception as e:
-        print(f"Ошибка при отправке сообщения пользователю {user_id}: {str(e)}")
+        print(f"Ошибка при отправке сообщения пользователю [скрыто]: {type(e).__name__}")
 
 
 @bot.message_handler(commands=['sendtoactive'])
@@ -264,7 +264,7 @@ def send_message_to_active_users_command(message):
             bot.send_message(message.chat.id, f"Сообщение отправлено только активным пользователям.")
 
         except Exception as e:
-            print(f"Ошибка при отправке сообщения активным пользователям: {str(e)}")
+            print(f"Ошибка при отправке сообщения активным пользователям: {type(e).__name__}")
     else:
         bot.send_message(message.chat.id, "Извините, я вас не понял. Используйте команду /start")
 
@@ -279,7 +279,7 @@ def send_message_to_active_users(message_text):
         for chat_id in active_users:
             bot.send_message(chat_id, message_text)  # Отправляем сообщение каждому активному пользователю
     except Exception as e:
-        print(f"Ошибка при отправке сообщения активным пользователям: {str(e)}")
+        print(f"Ошибка при отправке сообщения активным пользователям: {type(e).__name__}")
 
 
 
@@ -300,7 +300,7 @@ def send_message_to_inactive_users_command(message):
             bot.send_message(message.chat.id, f"Сообщение отправлено только неактивным пользователям.")
 
         except Exception as e:
-            print(f"Ошибка при отправке сообщения неактивным пользователям: {str(e)}")
+            print(f"Ошибка при отправке сообщения неактивным пользователям: {type(e).__name__}")
     else:
         bot.send_message(message.chat.id, "Извините, я вас не понял. Используйте команду /start")
 
@@ -312,7 +312,7 @@ def send_message_to_inactive_users(message_text):
             if not user['subscription_status']:
                 send_message_to_user(user['chat_id'], message_text)
     except Exception as e:
-        print(f"Ошибка при отправке сообщения неактивным пользователям: {str(e)}")
+        print(f"Ошибка при отправке сообщения неактивным пользователям: {type(e).__name__}")
 
 
 
@@ -339,7 +339,7 @@ def handle_statistics_command(message):
 
             bot.send_message(message.chat.id, response_text, parse_mode='HTML')
         except Exception as e:
-            print(f"Ошибка при обработке команды /statistics: {str(e)}")
+            print(f"Ошибка при обработке команды /statistics: {type(e).__name__}")
     else:
         bot.send_message(message.chat.id, "Извините, у вас нет доступа к этой команде.")
 

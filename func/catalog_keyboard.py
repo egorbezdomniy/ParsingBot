@@ -32,8 +32,8 @@ def process_new_password(message):
             data = {'app_password': new_password}
             admin_request_patch(data=data, chat_id=chat_id)
         except Exception as e:
-            print(f"Error in update_password: {e}")
+            print(f"Error in update_password: {type(e).__name__}")
     except Exception as e:
-        print(f"Error in update_password: {e}")
+        print(f"Error in update_password: {type(e).__name__}")
 
     bot.send_message(chat_id, "Пароль успешно изменен.")

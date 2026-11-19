@@ -49,4 +49,4 @@ def handle_start(message):
                 print("Произошла ошибка при создании записи о новом пользователе через API.")
 
     except Exception as e:
-        print(f"Error in handle_start: {e}")
+        print(f"Error in handle_start: {type(e).__name__}")
